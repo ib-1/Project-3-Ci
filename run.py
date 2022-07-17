@@ -11,30 +11,63 @@ def player_name():
             print("please enter a correct name")
     return name
 
-def settings_check():
+def grid_size():
     """
-    This function asks the user if they want to play on default settings and if they do not want to they can change how many rows and columns they want (max 10)
+    this function ask the user if they want the default grid size or they can choose a custom grid size but the max is 10 or the grid will be too big and minimunm 3 or else it will be too small 
     """
     while True:
-        defualt = input("Would you like to play on defualt settings?(5 rows & 5 columns):(y/n) ")
+        defualt = input("Would you like to play with the defualt grid?(5 rows & 5 columns):(y/n) ").lower()
         if defualt == "n":
             while True:
-                rows = int(input("How many rows?(max 10): "))
-                columns = int(input("How many columns?(max 10): "))
-                if rows > 10 or columns > 10:
+                grid_size = int(input("How big would you like your grid?(max 10, min 3): "))
+                if grid_size > 10:
                     print("")
-                    print("please put values lower then 10")
+                    print("please put a value lower then 10 and greater then 3")
+                    print("")
+                elif grid_size < 3:
+                    print("")
+                    print("please put a value lower then 10 and greater then 3")
                     print("")
                 else:
-                    return rows, columns
+                    return grid_size
                     break
         elif defualt == "y":
-            rows = 5
-            columns = 5
-            return rows, columns
+            grid_size = 5
+            return grid_size
             break
         else:
+            print("")
             print("please put a valid input, either 'y' or 'n'")
+            print("")
+
+def ship_settings():
+    """
+    This function asks the user how many ships will be on the map but the max is 8 so there inst too many ships
+    """
+    while True:
+        shipssetting = input("Would you like to play with the default amount of ships?(4 ships)(max 8 ships):(y/n) ").lower()
+        if shipssetting == "n":
+            while True:
+                ships = int(input("How many ships would you like(max 8, min 1): "))
+                if ships > 8:
+                    print("")
+                    print("please enter a value smaller then 8 and greater than 1")
+                    print("")
+                elif ships < 1:
+                    print("")
+                    print("please enter a value smaller then 8 and greater than 1")
+                    print("")
+                else:
+                    return ships
+                    break
+        elif shipssetting == "y":
+            ships = 4
+            return ships
+            break
+        else:
+            print("")
+            print("please put a valid input, either 'y' or 'n'")
+            print("")
         
     
 def game():
@@ -44,11 +77,10 @@ def game():
     print("Welcome to BATTLESHIP!")
     print("----------------")
     name = player_name()
-    gamesettings = settings_check()
-    rows = gamesettings[0]
-    columns = gamesettings[1]
+    gridsize = grid_size()
+    ship_count = ship_settings()
     print(name)
-    print("rows: " + str(rows))
-    print("columns: " + str(columns))
+    print("Grid Size: " + str(gridsize))
+    print("Ships: " + str(ship_count))
     
 game()
