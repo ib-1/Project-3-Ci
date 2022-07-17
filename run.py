@@ -1,3 +1,5 @@
+from random import randint
+
 def player_name():
     """
     runs a while loop to get a valid string of data from the user
@@ -70,6 +72,41 @@ def ship_settings():
             print("")
         
     
+def create_board(gridsize, ship_count):
+    """
+    This function will create a board for either the player or the computer and designate the ship spots marked by x
+    """
+    board = []
+    for i in range(0, gridsize):
+        board.append(["O"] * gridsize)
+    def ship_location(ship_count):
+        row = []
+        column = []
+        coordinates = []
+        F = 0
+        while F < ship_count:
+            x = randint(0, gridsize - 1)
+            y = randint(0, gridsize - 1)
+            for i in coordinates:
+                if i == [x,y]:
+                   print("dupe" + str(i) + str([x,y]))  # this will get rid of all duplicate cords so ships do not overlay
+                   coordinates.clear()
+                   row.clear()
+                   column.clear() 
+                   F = 0
+            coordinates.append([x,y])
+            row.append(x)
+            column.append(y)
+            F += 1
+        for i in range(0, ship_count):
+            board[row[i]][column[i]] = "x"
+    ship_location(ship_count)
+    return board
+
+def print_board(board):
+    for i in board:
+        print(" ".join(i))
+
 def game():
     """
     will run all main fucntions
@@ -82,5 +119,9 @@ def game():
     print(name)
     print("Grid Size: " + str(gridsize))
     print("Ships: " + str(ship_count))
+    player_board = create_board(gridsize, ship_count) 
+    print_board(player_board)  
+
     
 game()
+
