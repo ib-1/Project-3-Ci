@@ -21,14 +21,19 @@ def grid_size():
         defualt = input("Would you like to play with the defualt grid?(5 rows & 5 columns):(y/n) ").lower()
         if defualt == "n":
             while True:
-                grid_size = int(input("How big would you like your grid?(max 10, min 3): "))
+                # grid_size = int(input("How big would you like your grid?(max 10, min 3): "))
+                grid_size = 0
+                try:
+                    grid_size = int(input("How big would you like your grid?(max 10, min 3): "))
+                except ValueError:
+                    print("make sure you're putting a number!")
                 if grid_size > 10:
                     print("")
-                    print("please put a value lower then 10 and greater then 3")
+                    print("please put a value between 3-10")
                     print("")
                 elif grid_size < 3:
                     print("")
-                    print("please put a value lower then 10 and greater then 3")
+                    print("please put a value between 3-10")
                     print("")
                 else:
                     return grid_size
@@ -50,14 +55,18 @@ def ship_settings():
         shipssetting = input("Would you like to play with the default amount of ships?(4 ships)(max 8 ships):(y/n) ").lower()
         if shipssetting == "n":
             while True:
-                ships = int(input("How many ships would you like(max 8, min 1): "))
+                ships = 0
+                try:
+                    ships = int(input("How many ships would you like(max 8, min 1): "))
+                except ValueError:
+                    print("make sure you're putting a number!")
                 if ships > 8:
                     print("")
-                    print("please enter a value smaller then 8 and greater than 1")
+                    print("please enter a value between 1-8")
                     print("")
                 elif ships < 1:
                     print("")
-                    print("please enter a value smaller then 8 and greater than 1")
+                    print("please enter a value between 1-8")
                     print("")
                 else:
                     return ships
@@ -107,6 +116,23 @@ def print_board(board):
     for i in board:
         print(" ".join(i))
 
+def display_game(player_board, display_game, alt_board):
+    """
+    this function will display the game with the computers board not being visible so the user does not know where the enenmy ship is 
+    """
+    print("Users board: ")
+    print_board(player_board)
+    print("")
+    print("Computers board: ")
+    print_board(alt_board)
+
+def user_guess():
+    while True:
+        row = input("Row: ")
+        column = input("Columm: ")
+        
+
+
 def game():
     """
     will run all main fucntions
@@ -120,8 +146,9 @@ def game():
     print("Grid Size: " + str(gridsize))
     print("Ships: " + str(ship_count))
     player_board = create_board(gridsize, ship_count) 
-    print_board(player_board)  
-
+    computer_board = create_board(gridsize, ship_count)
+    alt_board = create_board(gridsize, 0)
+    display_game(player_board, display_game, alt_board)
     
 game()
 
