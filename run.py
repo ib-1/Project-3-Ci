@@ -97,8 +97,7 @@ def create_board(gridsize, ship_count):
             x = randint(0, gridsize - 1)
             y = randint(0, gridsize - 1)
             for i in coordinates:
-                if i == [x,y]:
-                   print("dupe" + str(i) + str([x,y]))  # this will get rid of all duplicate cords so ships do not overlay
+                if i == [x,y]: # clears any dupe ships and runs the code again
                    coordinates.clear()
                    row.clear()
                    column.clear() 
@@ -108,7 +107,7 @@ def create_board(gridsize, ship_count):
             column.append(y)
             F += 1
         for i in range(0, ship_count):
-            board[row[i]][column[i]] = "x"
+            board[row[i]][column[i]] = "*"
     ship_location(ship_count)
     return board
 
@@ -126,11 +125,73 @@ def display_game(player_board, display_game, alt_board):
     print("Computers board: ")
     print_board(alt_board)
 
-def user_guess():
+def user_guess(gridsize):
+    """
+    this function will ask the user for thier guess of row and column
+    """
+    max = gridsize - 1
+    print("Top left corner is row: 0, col: 0")
     while True:
-        row = input("Row: ")
-        column = input("Columm: ")
+        try:
+            row = int(input("Row: "))
+            if row > max:
+                print("please put a value lower or equal to " + str(max))
+            elif row < 0:
+                print("please put a number higher then 0")
+            else:
+                break
+        except ValueError:
+                print("make sure you're putting a number!")
+    while True:
+        try:
+            column = int(input("Column: "))
+            if column > max:
+                print("please put a value lower or equal to " + str(max))
+            elif column < 0:
+                print("please put a number higher then 0")
+            else:
+                break
+        except ValueError:
+                print("make sure you're putting a number!")
+    return row, column
         
+
+def computer_guess(gridsize):
+    """
+    this function will calculate the computers guess
+    """
+    max = gridsize - 1
+    row = randint(0, max)
+    column = randint(0, max)
+    return row, column
+
+def update_game(player_board, userguess, computer_board, computerguess, user_score, computer_score, alt_board):
+    """
+    this function will take all the information we have gathered and update the output of the game
+    """
+    user_mark = player_board[computerguess[0]][computerguess[1]]
+    print(user_mark)
+    player_board[computerguess[0]][computerguess[1]] = "x"
+    computer_mark = computer_board[userguess[0]][userguess[1]]
+    print(computer_mark)
+    alt_board[userguess[0]][userguess[1]] = "x"
+    if user_mark == "*":
+        print("The computer hit one of your ships!")
+        return 0, 1
+    if computer_mark == "*":
+        print("you hit a computers ship!" )
+        return 1, 0
+    else:
+        return 0, 0
+    
+
+
+
+def game_over():
+    print("-------------------")
+    print("Thank you for playing my game - ib")
+    print("-------------------")
+
 
 
 def game():
@@ -149,6 +210,30 @@ def game():
     computer_board = create_board(gridsize, ship_count)
     alt_board = create_board(gridsize, 0)
     display_game(player_board, display_game, alt_board)
+    user_score = 0
+    computer_score = 0
+    while True:
+        userguess = user_guess(gridsize)
+        computerguess = computer_guess(gridsize)
+        score = update_game(player_board, userguess, computer_board, computerguess, user_score, computer_score, alt_board) 
+        if score[0] == 1:
+            user_score += 1
+        elif score[1] == 1:
+            computer_score += 1
+        else:
+            print("no hits")
+        display_game(player_board, display_game, alt_board)
+        print("-------------------")
+        print(name + "'s score: " + str(user_score))
+        print("computers score: " + str(computer_score))
+        print("-------------------")
+        if user_score == ship_count:
+            print("YOU WIN!!!!")
+            break
+        elif computer_score == ship_count:
+            print("uh oh, you lose... computer wins!")
+            break
+    game_over()
     
 game()
 
