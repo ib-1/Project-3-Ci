@@ -125,44 +125,71 @@ def display_game(player_board, display_game, alt_board):
     print("Computers board: ")
     print_board(alt_board)
 
-def user_guess(gridsize):
+def user_guess(gridsize, user_guess_list):
     """
     this function will ask the user for thier guess of row and column
     """
+    x = 0
     max = gridsize - 1
     print("Top left corner is row: 0, col: 0")
     while True:
-        try:
-            row = int(input("Row: "))
-            if row > max:
-                print("please put a value lower or equal to " + str(max))
-            elif row < 0:
-                print("please put a number higher then 0")
+        while True:
+            try:
+                row = int(input("Row: "))
+                if row > max:
+                    print("please put a value lower or equal to " + str(max))
+                elif row < 0:
+                    print("please put a number higher then 0")
+                else:
+                    break
+            except ValueError:
+                    print("make sure you're putting a number!")
+        while True:
+            try:
+                column = int(input("Column: "))
+                if column > max:
+                    print("please put a value lower or equal to " + str(max))
+                elif column < 0:
+                    print("please put a number higher then 0")
+                else:
+                    break
+            except ValueError:
+                    print("make sure you're putting a number!")
+        guess = (row,column)
+        for i in user_guess_list:
+            if i == guess:
+                x = 1
             else:
-                break
-        except ValueError:
-                print("make sure you're putting a number!")
-    while True:
-        try:
-            column = int(input("Column: "))
-            if column > max:
-                print("please put a value lower or equal to " + str(max))
-            elif column < 0:
-                print("please put a number higher then 0")
-            else:
-                break
-        except ValueError:
-                print("make sure you're putting a number!")
-    return row, column
+                x = 0
+        if x == 1:
+            print("-------------------------------------")
+            print("you already guessed this coordinate")
+            print("-------------------------------------")
+        else:
+            break
+    return row,column
+                
         
 
-def computer_guess(gridsize):
+def computer_guess(gridsize, computer_guess_list):
     """
     this function will calculate the computers guess
     """
     max = gridsize - 1
-    row = randint(0, max)
-    column = randint(0, max)
+    x = 0
+    while True:
+        row = randint(0, max)
+        column = randint(0, max)
+        guess = (row,column)
+        for i in computer_guess_list:
+            if i == guess:
+                x = 1
+            else:
+                x = 0
+        if x == 1:
+            continue
+        else:
+            break
     return row, column
 
 def update_game(player_board, userguess, computer_board, computerguess, user_score, computer_score, alt_board):
@@ -170,10 +197,8 @@ def update_game(player_board, userguess, computer_board, computerguess, user_sco
     this function will take all the information we have gathered and update the output of the game
     """
     user_mark = player_board[computerguess[0]][computerguess[1]]
-    print(user_mark)
     player_board[computerguess[0]][computerguess[1]] = "x"
     computer_mark = computer_board[userguess[0]][userguess[1]]
-    print(computer_mark)
     alt_board[userguess[0]][userguess[1]] = "x"
     if user_mark == "*":
         print("The computer hit one of your ships!")
@@ -212,16 +237,18 @@ def game():
     display_game(player_board, display_game, alt_board)
     user_score = 0
     computer_score = 0
+    user_guess_list = []
+    computer_guess_list = []
     while True:
-        userguess = user_guess(gridsize)
-        computerguess = computer_guess(gridsize)
+        userguess = user_guess(gridsize, user_guess_list)
+        user_guess_list.append(userguess)
+        computerguess = computer_guess(gridsize, computer_guess_list)
+        computer_guess_list.append(computerguess)
         score = update_game(player_board, userguess, computer_board, computerguess, user_score, computer_score, alt_board) 
         if score[0] == 1:
             user_score += 1
         elif score[1] == 1:
             computer_score += 1
-        else:
-            print("no hits")
         display_game(player_board, display_game, alt_board)
         print("-------------------")
         print(name + "'s score: " + str(user_score))
