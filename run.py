@@ -160,6 +160,7 @@ def user_guess(gridsize, user_guess_list):
         for i in user_guess_list:
             if i == guess:
                 x = 1
+                break
             else:
                 x = 0
         if x == 1:
@@ -185,6 +186,7 @@ def computer_guess(gridsize, computer_guess_list):
         for i in computer_guess_list:
             if i == guess:
                 x = 1
+                break
             else:
                 x = 0
         if x == 1:
