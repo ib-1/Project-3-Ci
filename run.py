@@ -21,7 +21,6 @@ def grid_size():
         defualt = input("Would you like to play with the defualt grid?(5 rows & 5 columns):(y/n) ").lower()
         if defualt == "n":
             while True:
-                # grid_size = int(input("How big would you like your grid?(max 10, min 3): "))
                 grid_size = 0
                 try:
                     grid_size = int(input("How big would you like your grid?(max 10, min 3): "))
@@ -131,7 +130,9 @@ def user_guess(gridsize, user_guess_list):
     """
     x = 0
     max = gridsize - 1
+    print("----------------------------------")
     print("Top left corner is row: 0, col: 0")
+    print("----------------------------------")
     while True:
         while True:
             try:
@@ -223,17 +224,23 @@ def game():
     """
     will run all main fucntions
     """
+    print("")
+    print("-----------------------")
     print("Welcome to BATTLESHIP!")
-    print("----------------")
+    print("-----------------------")
+    print("")
     name = player_name()
+    print("")
     gridsize = grid_size()
+    print("")
     ship_count = ship_settings()
-    print(name)
+    print("")
     print("Grid Size: " + str(gridsize))
     print("Ships: " + str(ship_count))
     player_board = create_board(gridsize, ship_count) 
     computer_board = create_board(gridsize, ship_count)
     alt_board = create_board(gridsize, 0)
+    print("")
     display_game(player_board, display_game, alt_board)
     user_score = 0
     computer_score = 0
